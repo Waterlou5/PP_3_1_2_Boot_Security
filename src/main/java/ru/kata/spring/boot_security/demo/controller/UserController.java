@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
+import ru.kata.spring.boot_security.demo.repositories.UserService;
 import ru.kata.spring.boot_security.demo.security.MyUserDetails;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
@@ -18,10 +19,10 @@ import java.util.Set;
 
 @Controller
 public class UserController {
-    private final UserServiceImp userService;
+    private final UserService userService;
     private final RoleRepository roleRepository;
 
-    public UserController(RoleRepository roleRepository, UserServiceImp userService) {
+    public UserController(RoleRepository roleRepository, UserService userService) {
         this.roleRepository = roleRepository;
         this.userService = userService;
     }

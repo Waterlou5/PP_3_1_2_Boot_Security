@@ -9,24 +9,24 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import ru.kata.spring.boot_security.demo.service.CustomLoginSuccessHandler;
+import ru.kata.spring.boot_security.demo.repositories.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
-    private final UserServiceImp userServiceImp;
-    private final CustomLoginSuccessHandler customLoginSuccessHandler;
+    private final UserService userService;
+    private final SuccessUserHandler successUserHandler;
 
     @Autowired
-    public WebSecurityConfig(UserServiceImp userServiceImp, CustomLoginSuccessHandler customLoginSuccessHandler) {
-        this.userServiceImp = userServiceImp;
-        this.customLoginSuccessHandler = customLoginSuccessHandler;
+    public WebSecurityConfig(UserService userService, SuccessUserHandler successUserHandler) {
+        this.userService = userService;
+        this.successUserHandler = successUserHandler;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userServiceImp).passwordEncoder(getPasswordEncoder());
+        auth.userDetailsService(userService).passwordEncoder(getPasswordEncoder());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/user")
                 .failureUrl("/auth/login?error")
-                .successHandler(customLoginSuccessHandler).permitAll()
+                .successHandler(successUserHandler).permitAll()
                 .and()
                 .logout()
                 .logoutUrl("/logout").permitAll()

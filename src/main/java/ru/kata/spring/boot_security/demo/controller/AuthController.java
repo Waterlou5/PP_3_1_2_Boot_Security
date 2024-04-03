@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kata.spring.boot_security.demo.models.Role;
 import ru.kata.spring.boot_security.demo.models.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepository;
+import ru.kata.spring.boot_security.demo.repositories.UserService;
 import ru.kata.spring.boot_security.demo.service.RegistrationService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 import ru.kata.spring.boot_security.demo.service.UserValidator;
@@ -22,13 +23,14 @@ public class AuthController {
     private final UserValidator userValidator;
     private final RoleRepository roleRepository;
     @Autowired
-    private UserServiceImp userService;
+    private final UserService userService;
 
     @Autowired
-    public AuthController(RegistrationService registrationService, UserValidator userValidator, RoleRepository roleRepository) {
+    public AuthController(RegistrationService registrationService, UserValidator userValidator, RoleRepository roleRepository, UserService userService) {
         this.registrationService = registrationService;
         this.userValidator = userValidator;
         this.roleRepository = roleRepository;
+        this.userService = userService;
     }
 
     @GetMapping("/login")
@@ -64,5 +66,4 @@ public class AuthController {
             return "redirect:/auth/login";
         }
     }
-
 }
